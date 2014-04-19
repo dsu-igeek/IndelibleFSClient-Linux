@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="IndelibleFSClient Linux" default="buildJar" basedir=".">
+	<description>
+        Build file for iGeek, Inc. common library for Linux
+  	</description>
+	<import file="../iGeekCommon-Linux/build-common-linux.xml"/>
+	<target name="localProperties">
+		<!-- set global properties for this build -->
+		<property name="nativesrc" location="nativesrc"/>
+		<property name="jarName" value="iGeekCommon-Linux.jar"/>
+		<property name="testsJarName" value="iGeekCommon-LinuxTests.jar"/>
+		<property name="linuxlibindelible" location="${nativesrc}/libIndelible" />
+	</target>
+
+	<target name="setupOtherProjects">
+		<addOtherProject otherProjectName="iGeekCommon-Linux" classPathRefID="localLibs"/>
+		<addOtherProject otherProjectName="IndelibleFSClient" classPathRefID="localLibs"/>
+	</target>
+	
+	<target name="buildJar" depends="init, otherBuilds, javaCompile, iGeekBuildCommon.buildJar"/>
+</project>
