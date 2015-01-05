@@ -40,7 +40,7 @@ import avahi4j.ServiceResolver;
 import avahi4j.ServiceResolver.ServiceResolverEvent;
 import avahi4j.exceptions.Avahi4JException;
 
-import com.igeekinc.indelible.indeliblefs.IndelibleFSClient;
+import com.igeekinc.indelible.indeliblefs.firehose.IndelibleFSClient;
 import com.igeekinc.indelible.indeliblefs.server.IndelibleFSServerRemote;
 
 public class IndelibleAvahiMasterClient implements IClientCallback, IServiceBrowserCallback, IServiceResolverCallback, IEntryGroupCallback
