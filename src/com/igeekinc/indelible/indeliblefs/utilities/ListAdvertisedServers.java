@@ -45,8 +45,8 @@ import avahi4j.ServiceResolver;
 import avahi4j.ServiceResolver.ServiceResolverEvent;
 import avahi4j.exceptions.Avahi4JException;
 
+import com.igeekinc.indelible.indeliblefs.IndelibleFSServer;
 import com.igeekinc.indelible.indeliblefs.security.EntityAuthenticationClient;
-import com.igeekinc.indelible.indeliblefs.server.IndelibleFSServerRemote;
 import com.igeekinc.util.logging.ErrorLogMessage;
 
 public class ListAdvertisedServers implements IClientCallback, IServiceBrowserCallback, IServiceResolverCallback
@@ -112,10 +112,10 @@ public class ListAdvertisedServers implements IClientCallback, IServiceBrowserCa
     }
     private void startBonjour() throws Exception
     {
-        System.out.println("Searching for servers with name '"+IndelibleFSServerRemote.kIndelibleFSBonjourServiceName+"'");
+        System.out.println("Searching for servers with name '"+IndelibleFSServer.kIndelibleFSBonjourServiceName+"'");
         //DNSSD.browse(IndelibleFSServer.kIndelibleFSBonjourServiceName, las);
 		browser = client.createServiceBrowser(this, Avahi4JConstants.AnyInterface,
-				Protocol.ANY , IndelibleFSServerRemote.kIndelibleFSBonjourServiceName, null, 0);
+				Protocol.ANY , IndelibleFSServer.kIndelibleFSBonjourServiceName, null, 0);
     }
 
 	@Override

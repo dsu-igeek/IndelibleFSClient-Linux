@@ -40,8 +40,8 @@ import avahi4j.ServiceResolver;
 import avahi4j.ServiceResolver.ServiceResolverEvent;
 import avahi4j.exceptions.Avahi4JException;
 
+import com.igeekinc.indelible.indeliblefs.IndelibleFSServer;
 import com.igeekinc.indelible.indeliblefs.firehose.IndelibleFSClient;
-import com.igeekinc.indelible.indeliblefs.server.IndelibleFSServerRemote;
 
 public class IndelibleAvahiMasterClient implements IClientCallback, IServiceBrowserCallback, IServiceResolverCallback, IEntryGroupCallback
 {
@@ -81,7 +81,7 @@ public class IndelibleAvahiMasterClient implements IClientCallback, IServiceBrow
 			client = new Client(this);
 			client.start();
 			listenerList = new EventListenerList();
-			browser = client.createServiceBrowser(this, Avahi4JConstants.AnyInterface, Protocol.ANY , IndelibleFSServerRemote.kIndelibleFSBonjourServiceName, null, 0);
+			browser = client.createServiceBrowser(this, Avahi4JConstants.AnyInterface, Protocol.ANY , IndelibleFSServer.kIndelibleFSBonjourServiceName, null, 0);
 			long started = System.currentTimeMillis();
 			synchronized(this)
 			{
@@ -220,7 +220,7 @@ public class IndelibleAvahiMasterClient implements IClientCallback, IServiceBrow
 		String [] cmds = new String[4];
 		cmds[0] = "/usr/bin/avahi-publish-service";
 		cmds[1] = "IndelibleFS";
-		cmds[2] = IndelibleFSServerRemote.kIndelibleFSBonjourServiceName;
+		cmds[2] = IndelibleFSServer.kIndelibleFSBonjourServiceName;
 		cmds[3] = Integer.toString(registryPort);
 		Process registerProcess = Runtime.getRuntime().exec(cmds);
 		registerProcesses.add(registerProcess);
@@ -250,7 +250,7 @@ public class IndelibleAvahiMasterClient implements IClientCallback, IServiceBrow
 		String [] cmds = new String[4];
 		cmds[0] = "/usr/bin/avahi-publish-service";
 		cmds[1] = "IndelibleFS";
-		cmds[2] = IndelibleFSServerRemote.kIndelibleAuthBonjourServiceName;
+		cmds[2] = IndelibleFSServer.kIndelibleAuthBonjourServiceName;
 		cmds[3] = Integer.toString(registryPort);
 		Process registerProcess = Runtime.getRuntime().exec(cmds);
 		registerProcesses.add(registerProcess);
