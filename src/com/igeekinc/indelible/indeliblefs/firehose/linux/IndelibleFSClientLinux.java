@@ -1,3 +1,5 @@
+package com.igeekinc.indelible.indeliblefs.firehose.linux;
+
 /*
  * Copyright 2002-2014 iGeek, Inc.
  * All Rights Reserved
@@ -14,17 +16,19 @@
  * limitations under the License.@
  */
  
-package com.igeekinc.indelible.indeliblefs.linux;
-
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.rmi.AccessException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 
 import org.apache.log4j.Logger;
 
-import com.igeekinc.indelible.indeliblefs.IndelibleFSClient;
+import com.igeekinc.indelible.indeliblefs.firehose.IndelibleFSClient;
+import com.igeekinc.indelible.indeliblefs.firehose.IndelibleFSFirehoseClient;
+import com.igeekinc.indelible.indeliblefs.linux.IndelibleAvahiMasterClient;
+import com.igeekinc.indelible.indeliblefs.linux.IndelibleServiceFoundEvent;
+import com.igeekinc.indelible.indeliblefs.linux.IndelibleServiceListener;
+import com.igeekinc.indelible.indeliblefs.security.AuthenticationFailureException;
 import com.igeekinc.util.CheckCorrectDispatchThread;
 import com.igeekinc.util.logging.ErrorLogMessage;
 
@@ -49,18 +53,23 @@ public class IndelibleFSClientLinux extends IndelibleFSClient implements Indelib
 		System.out.println("Found server "+foundEvent.getName()+"("+foundEvent.getHostname()+":"+foundEvent.getPort()+")");
 		try
 		{
-		    Registry locateRegistry = LocateRegistry.getRegistry(foundEvent.getHostname(), foundEvent.getPort());
-    		Logger.getLogger(IndelibleFSClient.class).error("Found registry "+foundEvent.getHostname() + " port = "+foundEvent.getPort());
-		    addRegistry(foundEvent.getHostname(), foundEvent.getPort(), locateRegistry);
+        	InetSocketAddress address = new InetSocketAddress(foundEvent.getHostname(), foundEvent.getPort());
+        	IndelibleFSFirehoseClient client = new IndelibleFSFirehoseClient(address);
+        	Logger.getLogger(IndelibleFSClient.class).error("Found advertised server "+foundEvent.getHostname() + " port = "+foundEvent.getPort());
+        	addServer(client);
+            Logger.getLogger(IndelibleFSClient.class).info("Found service");
 		} catch (AccessException e)
 		{
 		    Logger.getLogger(IndelibleFSClient.class).error(new ErrorLogMessage("Caught exception"), e);
 		} catch (RemoteException e)
 		{
 		    Logger.getLogger(IndelibleFSClient.class).error(new ErrorLogMessage("Caught exception"), e);
-		} catch (NotBoundException e)
+		} catch (IOException e)
 		{
 		    Logger.getLogger(IndelibleFSClient.class).error(new ErrorLogMessage("Caught exception"), e);
+		} catch (AuthenticationFailureException e) 
+		{
+			Logger.getLogger(IndelibleFSClient.class).error(new ErrorLogMessage("Caught exception"), e);
 		}
 	}
 
